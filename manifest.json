@@ -1,0 +1,26 @@
+{
+    "name": "Reverb Price Finder",
+    "page_action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/price-tag16.png",
+            "32": "images/price-tag32.png",
+            "128": "images/price-tag128.png"
+        }
+    },
+    "icons": {
+        "16": "images/price-tag16.png",
+        "32": "images/price-tag32.png",
+        "128": "images/price-tag128.png"
+    },
+    "permissions": [
+        "contextMenus"
+    ],
+    "background": {
+        "persistent": false,
+        "scripts": ["eventPage.js"]
+    },
+    "version": "1.0",
+    "description": "Finds the lowest price for an item on reverb",
+    "manifest_version": 2
+}
