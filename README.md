@@ -1,4 +1,4 @@
-#Reverb Price Finder! v 1.0
+# Reverb Price Finder! v 1.0
 
 This is a simple chrome extension that allows a user to find the average sale price of an item on reverb.
 
