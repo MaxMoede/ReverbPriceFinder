@@ -31,9 +31,10 @@ function onClickHandler(info, tab) {
 	bkg.console.log("Before: " + info.selectionText);
   getPriceGuideID(info.selectionText, function(priceGuideID) {
     console.log("from click handler: price guide id is " + priceGuideID);
-    getAverageLowPrice(priceGuideID, function(lowPrice){
+    getAverageLowPrice(priceGuideID, function(lowPrice, lowestPrice){
       console.log("From click handler: low price is " + lowPrice);
-      alert("Low price for " + info.selectionText + ": " + lowPrice);
+      alert("Low price for " + info.selectionText + ": " + lowPrice + "\n"
+            + "Absolute lowest price sold: " + lowestPrice);
     }, function(status){
       console.log("Low price was unable to be found.");
     });
@@ -43,7 +44,7 @@ function onClickHandler(info, tab) {
   });
 };
 
-
+//
 //function that attempts to access reverb's REST Api.
 //if it works, json data is handled with @successHandler.
 //if it fails, errorHandler is called.
@@ -126,17 +127,23 @@ function getAverageLowPrice(priceGuideID, successHandler, errorHandler){
   theReq = getJSON(queryString, function(data){
     var averageFinalPriceSum = 0;
     var numPrices = 0;
+    var lowestPrice = -1;
     console.log(data);
     console.log("There u go");
     for (var eachPriceInd in data["summaries"]){
       var thePrice = data["summaries"][eachPriceInd]["average_price_final"]["amount"];
-      averageFinalPriceSum += parseFloat(thePrice);
+      var priceFloat = parseFloat(thePrice);
+      averageFinalPriceSum += priceFloat;
+      if (lowestPrice == -1 || priceFloat < lowestPrice){
+        lowestPrice = priceFloat;
+      }
       numPrices += 1;
     }
-    var avgPrice = averageFinalPriceSum / numPrices;
+    var avgPrice = Math.round(averageFinalPriceSum / numPrices); 
     console.log("average price: " + avgPrice);
+    console.log("lowest price: " + lowestPrice);
     if (avgPrice != 0){
-      successHandler(avgPrice);
+      successHandler(avgPrice, lowestPrice);
     } else {
       errorHandler();
     }
